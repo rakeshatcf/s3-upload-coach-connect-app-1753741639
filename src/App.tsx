@@ -1,12 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import App from './App';
-import LoginPage from './LoginPage';
-import HomePage from './HomePage';
-import DashboardPage from './DashboardPage';
-import API_BASE_URL from './api';
-import FileUploader from './FileUploader';
-import FileList from './FileList';
+import LoginPage from './pages/LoginPage';
+import HomePage from './pages/HomePage';
+import DashboardPage from './pages/DashboardPage';
+import FileUploader from './components/FileUploader/FileUploader';
+import FileList from './components/FileList/FileList';
 
 function App() {
   return (
