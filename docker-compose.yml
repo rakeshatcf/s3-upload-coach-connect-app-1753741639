@@ -1,0 +1,60 @@
+
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    depends_on:
+      - database
+    networks:
+      - app-network
+    volumes:
+      - ./logs:/app/logs
+
+  database:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    networks:
+      - app-network
+    volumes:
+      - redis_data:/data
+
+volumes:
+  db_data:
+  redis_data:
+
+networks:
+  app-network:
+    driver: bridge
